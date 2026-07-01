@@ -39,6 +39,9 @@ class Recommendation(BaseModel):
     name: str
     url: str
     test_type: str
+    duration: str = ""
+    keys: str = ""
+    languages: str = ""
 
 
 class ChatResponse(BaseModel):
@@ -79,3 +82,4 @@ class LLMExtractionResult(BaseModel):
     removals: list[str] = []        # for refine: items/skills to remove
     compare_items: list[str] = []   # for compare: specific assessment names
     previous_shortlist_names: list[str] = []  # names already recommended
+    is_confirmation: bool = False   # user confirmed the final shortlist
