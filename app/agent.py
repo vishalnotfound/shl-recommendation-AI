@@ -118,7 +118,7 @@ def _parse_extraction(raw: dict) -> LLMExtractionResult:
             industry=constraints_raw.get("industry") or "",
             specific_assessments=constraints_raw.get("specific_assessments") or [],
             query_text=constraints_raw.get("query_text") or "",
-            include_personality=constraints_raw.get("include_personality", True),
+            include_personality=constraints_raw.get("include_personality") if constraints_raw.get("include_personality") is not None else True,
         )
 
         intent = raw.get("intent", "clarify")
@@ -135,7 +135,7 @@ def _parse_extraction(raw: dict) -> LLMExtractionResult:
             removals=raw.get("removals", []) or [],
             compare_items=raw.get("compare_items", []) or [],
             previous_shortlist_names=raw.get("previous_shortlist_names", []) or [],
-            is_confirmation=raw.get("is_confirmation", False),
+            is_confirmation=bool(raw.get("is_confirmation")),
         )
     except Exception as e:
         logger.error(f"Failed to parse extraction result: {e}")
