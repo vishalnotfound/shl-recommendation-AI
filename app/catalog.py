@@ -55,6 +55,14 @@ def load_catalog(path: Optional[str] = None) -> list[dict]:
     _catalog_by_name = {}
     _catalog_urls = set()
     for item in _catalog:
+        # Normalize new scraper format to internal format
+        if "link" in item and "url" not in item:
+            item["url"] = item["link"]
+        if "test_type" not in item:
+            item_keys = item.get("keys", [])
+            types = [KEYS_TO_LETTER[k] for k in item_keys if k in KEYS_TO_LETTER]
+            item["test_type"] = ",".join(types) if types else ""
+
         name_lower = item["name"].lower().strip()
         _catalog_by_name[name_lower] = item
         _catalog_urls.add(item["url"])
