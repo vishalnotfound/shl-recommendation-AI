@@ -110,14 +110,14 @@ def _parse_extraction(raw: dict) -> LLMExtractionResult:
     try:
         constraints_raw = raw.get("constraints", {})
         constraints = ExtractedConstraints(
-            role=constraints_raw.get("role") or "",
-            seniority=constraints_raw.get("seniority") or "",
-            skills=constraints_raw.get("skills") or [],
-            test_types=constraints_raw.get("test_types") or [],
-            languages=constraints_raw.get("languages") or [],
-            industry=constraints_raw.get("industry") or "",
-            specific_assessments=constraints_raw.get("specific_assessments") or [],
-            query_text=constraints_raw.get("query_text") or "",
+            role=constraints_raw.get("role", ""),
+            seniority=constraints_raw.get("seniority", ""),
+            skills=constraints_raw.get("skills", []) or [],
+            test_types=constraints_raw.get("test_types", []) or [],
+            languages=constraints_raw.get("languages", []) or [],
+            industry=constraints_raw.get("industry", ""),
+            specific_assessments=constraints_raw.get("specific_assessments", []) or [],
+            query_text=constraints_raw.get("query_text", ""),
             include_personality=constraints_raw.get("include_personality", True),
         )
 
@@ -128,9 +128,9 @@ def _parse_extraction(raw: dict) -> LLMExtractionResult:
         return LLMExtractionResult(
             intent=intent,
             constraints=constraints,
-            draft_reply=raw.get("draft_reply") or "",
-            clarifying_question=raw.get("clarifying_question") or "",
-            additions=raw.get("additions") or [],
+            draft_reply=raw.get("draft_reply", ""),
+            clarifying_question=raw.get("clarifying_question", ""),
+            additions=raw.get("additions", []) or [],
             removals=raw.get("removals", []) or [],
             compare_items=raw.get("compare_items", []) or [],
             previous_shortlist_names=raw.get("previous_shortlist_names", []) or [],
@@ -206,7 +206,7 @@ async def handle_chat(request: ChatRequest) -> ChatResponse:
 
 async def _handle_clarify(extraction: LLMExtractionResult) -> ChatResponse:
     """Handle clarification intent — ask a focused question, no recommendations."""
-    reply = extraction.draft_reply or extraction.clarifying_question
+    reply = extraction.clarifying_question or extraction.draft_reply
     if not reply:
         reply = (
             "I can help narrow that down. "
