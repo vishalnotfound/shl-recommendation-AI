@@ -1,4 +1,4 @@
-# SHL Conversational Assessment Recommender
+# SHL Conversational Assessment Recommendation Engine
 
 A stateless FastAPI service that acts as a conversational AI agent for recommending SHL assessment products. Built for the SHL hiring assessment.
 
